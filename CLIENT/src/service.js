@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-axios.defaults.baseURL = process.env.REACT_APP_URL; // השתמש בכתובת מהקובץ .env
+axios.defaults.baseURL = "http://localhost:5010"
 
 axios.interceptors.response.use(
   response => {
@@ -8,13 +7,12 @@ axios.interceptors.response.use(
   },
   error => {
     console.error('Error response:', error.response);
-    return Promise.reject(error);
+    return Promise.reject(error); 
   }
 );
-
 export default {
   getTasks: async () => {
-    const result = await axios.get(`/getAll`);
+    const result = await axios.get(`/getAll`)
     console.log(result);
     return result.data;
   },
@@ -34,8 +32,8 @@ export default {
   },
 
   deleteTask: async (id) => {
-    const result = await axios.delete(`/deleteItem/${id}`, {});
-    console.log(result);
+    const result = await axios.delete(`/deleteItem/${id}`, {})
+    console.log(result)
     return result.data;
   }
 };
