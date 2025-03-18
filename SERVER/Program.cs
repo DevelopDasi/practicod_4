@@ -53,7 +53,6 @@ app.MapDelete("/deleteItem/{id}", async (ToDoDbContext context, int id) =>
     await context.SaveChangesAsync();
     return Results.NoContent();
 });
-
 app.MapGet("/", () => "Hello World!");
 
 app.Run();
