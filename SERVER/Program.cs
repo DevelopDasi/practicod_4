@@ -1,5 +1,5 @@
-using TodoApi; 
-using Microsoft.EntityFrameworkCore; 
+using TodoApi;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,19 +18,21 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 
 var app = builder.Build();
 app.UseCors("AllowAll");
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-app.MapGet("/getAll", async (ToDoDbContext context) => 
+// }
+app.MapGet("/getAll", async (ToDoDbContext context) =>
     await context.Items.ToListAsync());
-app.MapPost("/addItem", async (ToDoDbContext context, string name) => {
-    var item = new Item { Name =  name, IsComplete = false };
+app.MapPost("/addItem", async (ToDoDbContext context, string name) =>
+{
+    var item = new Item { Name = name, IsComplete = false };
     context.Items.Add(item);
     await context.SaveChangesAsync();
 });
-app.MapPut("/updateItem/{id}", async (ToDoDbContext context, int id) => {
+app.MapPut("/updateItem/{id}", async (ToDoDbContext context, int id) =>
+{
     var itemToUpdate = await context.Items.FindAsync(id);
     if (itemToUpdate == null)
     {
@@ -39,8 +41,9 @@ app.MapPut("/updateItem/{id}", async (ToDoDbContext context, int id) => {
     itemToUpdate.IsComplete = itemToUpdate.IsComplete == true ? false : true;
     await context.SaveChangesAsync();
     return Results.NoContent();
-});    
-app.MapDelete("/deleteItem/{id}", async (ToDoDbContext context, int id) => {
+});
+app.MapDelete("/deleteItem/{id}", async (ToDoDbContext context, int id) =>
+{
     var item = await context.Items.FindAsync(id);
     if (item == null)
     {
@@ -50,5 +53,7 @@ app.MapDelete("/deleteItem/{id}", async (ToDoDbContext context, int id) => {
     await context.SaveChangesAsync();
     return Results.NoContent();
 });
+
+app.MapGet("/", () => "Hello World!");
 
 app.Run();
